@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mabini, Batangas - Tourism Landing Page</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #001829;
+            color: white;
+        }
+
+        .hero-section {
+            background-image: url('heroimg/heroimg2.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .hero-section {
+            transition: background-image 1s ease-in-out;
+        }
+
+
+        .hero-overlay {
+            background-color: rgba(0, 24, 41, 0.5);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+
+        .marine-card {
+            transition: transform 0.3s ease;
+        }
+
+        .marine-card:hover {
+            transform: scale(1.05);
+        }
+
+        .marine-card img {
+            transition: transform 0.3s ease;
+        }
+
+        .marine-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .carousel-container {
+            perspective: 1000px;
+        }
+
+        .carousel-card {
+            transition: all 0.5s ease;
+        }
+
+        .carousel-card.center {
+            transform: scale(1) translateX(0);
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .carousel-card.left {
+            transform: scale(0.75) translateX(-80%);
+            opacity: 0.3;
+            z-index: 5;
+        }
+
+        .carousel-card.right {
+            transform: scale(0.75) translateX(80%);
+            opacity: 0.3;
+            z-index: 5;
+        }
+
+        .dot {
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            width: 2rem;
+            background-color: #FDB819;
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: #FDB819;
+            color: #001829;
+        }
+
+        /* Modal / expanded card styles */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 70;
+        }
+
+        .card-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(92vw, 1000px);
+            height: min(78vh, 720px);
+            background: #001829;
+            border-radius: 14px;
+            z-index: 80;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            gap: 16px;
+            overflow: hidden;
+            padding: 18px;
+        }
+
+        .card-modal .images {
+            flex: 1 1 60%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .card-modal .images .main-img {
+            flex: 1 1 auto;
+            border-radius: 10px;
+            overflow: hidden
+        }
+
+        .card-modal .images .main-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block
+        }
+
+        .card-modal .images .thumbs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .card-modal .images .thumbs img {
+            width: 100%;
+            height: 72px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.9
+        }
+
+        .card-modal .info {
+            flex: 1 1 40%;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .card-modal .info h3 {
+            font-size: 1.25rem;
+            margin: 0
+        }
+
+        .card-modal .info .contact {
+            background: #031826;
+            padding: 12px;
+            border-radius: 8px
+        }
+
+        .card-modal .close-btn {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#001829]/80 backdrop-blur-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-center gap-16">
+                <div class="flex items-center justify-center w-14 h-14">
+                    <img src="logo.png" alt="Logo" class="w-full h-full object-cover">
+                </div>
+
+                <div class="flex items-center gap-8">
+                    <a href="#about" class="text-white hover:text-[#FDB819] transition-colors">About</a>
+                    <a href="#resorts" class="text-white hover:text-[#FDB819] transition-colors">Visit Us</a>
+                </div>
+
+                <div class="flex items-center gap-8">
+                    <a href="#services" class="text-white hover:text-[#FDB819] transition-colors">Services</a>
+                    <a href="#find-us" class="text-white hover:text-[#FDB819] transition-colors">Location</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="hero-overlay absolute inset-0"></div>
+        <div class="relative z-10 text-center text-white px-4">
+            <p class="mb-4 tracking-widest opacity-90 text-sm">WELCOME TO</p>
+            <h1 class="mb-6 text-6xl font-bold">Mabini, Batangas</h1>
+            <p class="mb-8 max-w-xl mx-auto opacity-90 text-lg">
+                Where Nature Create Unforgettable Journeys
+            </p>
+            <button
+                class="bg-[#FDB819] hover:bg-[#FDB819]/90 text-[#001829] rounded-full px-8 py-3 font-semibold transition-colors">
+                Plan Your Visit
+            </button>
+        </div>
+        <button onclick="scrollToAbout()"
+            class="absolute bottom-12 left-1/2 -translate-x-1/2 text-white animate-bounce cursor-pointer bg-transparent border-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"></path>
+            </svg>
+        </button>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-[#001829] py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-white mb-6 text-4xl font-bold">About Mabini, Batangas</h2>
+                <p class="text-white/80 max-w-3xl mx-auto leading-relaxed text-lg">
+                    Mabini, Batangas is known for diving and snorkeling in Anilao. The town, named after Apolinario
+                    Mabini, has a long history of welcoming visitors. You get a rich marine ecosystem and clear spots
+                    for both new snorkelers and experienced divers. The underwater sites offer steady, memorable
+                    experiences without feeling crowded or commercial
+                </p>
+                <button class="mt-8 text-[#FDB819] hover:text-[#FDB819]/80 transition-colors">
+                    Learn More →
+                </button>
+            </div>
+
+            <!-- Resort Gallery -->
+            <div id="resorts" class="mt-20">
+                <div class="text-center mb-10">
+                    <h2 class="text-white mb-6 text-4xl font-bold">Resorts</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/campnetanya2.jpg|Resorts/campnetanya1.jpg|Resorts/campnetanya.jpg"
+                        data-phone="0927 895 4092" data-email="info@campnetanya.com.ph"
+                        data-location="Brgy. Ligaya, Mabini, Batangas"
+                        data-description="A beachfront resort in Batangas offering laid-back comfort, a private beach, and resort-style amenities. It’s a quiet spot to relax, swim, and enjoy sea views. Good for couples or friends looking for a chill getaway without fuss.">
+                        <img src="Resorts/campnetanya2.jpg" alt="Camp Netanya Resort & Spa"
+                            class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">Camp Netanya Resort & Spa</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/vivere azure2.jpg|Resorts/vivere azure.jpg|Resorts/vivere azure1.jpg"
+                        data-phone="(02) 8771 7777" data-email="hello@vivereazure.com"
+                        data-location="Sitio Aguada, Brgy. San Teodoro, Mabini, Batangas"
+                        data-description="A beachfront resort in Batangas offering relaxing accommodations, sea views, and easy access to the shore. It’s ideal for travelers wanting a calm, no-frills beach stay">
+                        <img src="Resorts/vivere azure2.jpg" alt="Vivere Azure" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">Vivere Azure</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/anilao awari bay1.jpg|Resorts/anilao awari bay.jpg|Resorts/anilao awari bay2.jpg"
+                        data-phone="0917 720 3915" data-email="inquiry@anilaoawaribay.com"
+                        data-location="Brgy. Solo, Mabini, Batangas"
+                        data-description="A beachfront resort area in Batangas, popular for its laid-back vibe, shoreline access, and easy reach to diving/snorkeling spots. It’s suited for travelers seeking a relaxing seaside stay without over-the-top luxury.">
+                        <img src="Resorts/anilao awari bay1.jpg" alt="Anilao Awari Bay"
+                            class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">Anilao Awari Bay</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/la chevrerie1.jpg|Resorts/la chevrerie.jpg|Resorts/la chevrerie2.jpg"
+                        data-phone="0917 703 3320" data-email="info@lachevrerie-resorts.com"
+                        data-location="Brgy. Ligaya, Mabini, Batangas"
+                        data-description="A beachfront resort offering cozy accommodations, a peaceful atmosphere, and easy access to the sea. It’s a good choice for a relaxed stay by the beach, ideal for couples or small groups wanting simple comfort and sea views.">
+                        <img src="Resorts/la chevrerie1.jpg" alt="La Chevrerie Resort and Spa"
+                            class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">La Chevrerie Resort and Spa</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/Seaspring.jpg|Resorts/Seaspring1.jpg|Resorts/seaspring2.jpg"
+                        data-phone="0917 153 5306" data-email="ssrbatangas@gmail.com"
+                        data-location="Brgy. Mainit, Mabini, Batangas"
+                        data-description="A beachfront resort in Mabini, Batangas with natural hot springs, saltwater pools, and different room types for couples, families, or groups. Rooms have balconies with sea or pool views. Amenities include air‑conditioning, free WiFi, a restaurant, and recreation facilities. The resort has hot‑spring pools, seawater pools (some with slides), a sauna, space for water activities like snorkeling and diving, and access to a nearby dive center. It’s suitable for a relaxed beach stay with pools, hot springs, and diving without high hotel prices.">
+                        <img src="Resorts/Seaspring.jpg" alt="Sea Spring Resort" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">Sea Spring Resort</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/Eaglepoint2.jpg|Resorts/Eaglepoint1.jpg|Resorts/Eaglepoint.jpg"
+                        data-phone="0917 846 3958" data-email="communications@eaglepointresort.com.ph"
+                        data-location="Brgy. Bagalangit, Mabini, Batangas"
+                        data-description="A beachfront resort in Mabini, Batangas with direct beach access and simple accommodations. You’ll find basic rooms and easy access to snorkeling or diving spots. It’s a laid‑back place suited for guests who want a straightforward beach stay without extra frills.">
+                        <img src="Resorts/Eaglepoint2.jpg" alt="Eagle Point Resort" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">Eagle Point Resort</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/Aiyanar Beach and Dive Resort.jpg|Resorts/Aiyanar Beach and Dive Resort1.jpg|Resorts/Aiyanar Beach and Dive Resort2.jpg"
+                        data-phone="0917 883 1428" data-email="info@aiyanar.com"
+                        data-location="Sitio Looc, Brgy. Bagalangit, Mabini, Batangas"
+                        data-description="A hillside with sea‑view rooms and private balconies. The resort has a full dive center with gear rental, training pool, and boats to nearby dive sites around Anilao, Verde Island, and Puerto Galera. Amenities include an infinity pool, restaurant and bar, spa, and options for snorkeling and other water activities. It is ideal for divers, couples, or small groups seeking comfort, sea views, and easy access to the water.">
+                        <img src="Resorts/Aiyanar Beach and Dive Resort.jpg" alt="Eagle Point Resort"
+                            class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">Aiyanar Beach and Dive Resort</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/Porto Novo Anilao Dive and Leisure Resort.jpg|Resorts/Porto Novo Anilao Dive and Leisure Resort1.jpg|Resorts/Porto Novo Anilao Dive and Leisure Resort2.jpg"
+                        data-phone="0908 860 1970" data-email="inquiry@portonovoanilao.com"
+                        data-location="Sitio Guinhawa, Brgy. Solo, Mabini, Batangas"
+                        data-description="It offers beachfront access, dive services, and simple comfort. Rooms have air‑conditioning, private bathrooms, and some have sea‑view balconies. The resort has an outdoor pool, garden, sun terrace, restaurant, bar, spa, and free Wi‑Fi. Diving services are available for beginners and certified divers, with nearby dive sites featuring coral gardens and good visibility. Kayaking and snorkeling are also offered. It is suitable for first-time or frequent divers, travelers wanting a relaxed stay, and small groups or couples looking for sea views, pool time, and water activities.">
+                        <img src="Resorts/Porto Novo Anilao Dive and Leisure Resort.jpg" alt="Eagle Point Resort"
+                            class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">Porto Novo Anilao Dive and Leisure Resort</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+
+                    <div class="marine-card relative h-64 rounded-2xl overflow-hidden cursor-pointer"
+                        data-images="Resorts/pier uno.jpg|Resorts/pier uno1.png|Resorts/pier uno2.png"
+                        data-phone="0917 808 1877" data-email="infopieruno@pierunodiveresort.com"
+                        data-location="Brgy. Solo, Mabini, Batangas"
+                        data-description="It features a swimming pool with jacuzzi, on‑site dive center with full gear rental and Nitrox service, and dive masters/instructors for beginners and certified divers. The resort also has a restaurant, common Wi‑Fi, spa/massage, and basic amenities like hot‑and‑cold showers and cable TV. You can dive, snorkel, kayak, or just relax by the pool or beach. It’s a good pick if you want diving access + simple, comfortable stay near the sea.">
+                        <img src="Resorts/pier uno.jpg" alt="Eagle Point Resort" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-semibold">Pier Uno Dive Resort</h3>
+                            <p class="text-white/70 text-sm mt-1">...learn More</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="services" class="bg-[#001829] py-20">
+        <div class="container mx-auto px-6">
+
+            <div class="text-center mb-12">
+                <h2 class="text-white mb-4 text-4xl font-bold">Why Choose Us</h2>
+                <p class="text-white/70 text-lg">What makes Mabini, Batangas special.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- CARD 1 -->
+                <div class="why-card bg-white rounded-2xl overflow-hidden cursor-pointer transition-transform hover:scale-105"
+                    data-images="Activities/hiking1.jpg|Activities/hiking2.jpg|Activities/hiking3.jpg">
+                    <img class="why-img w-full h-56 object-cover" src="Activities/hiking1.jpg">
+                    <div class="p-6 text-center text-black">
+                        <h3 class="text-xl font-bold">Hiking</h3>
+                        <p class="mt-2 text-sm text-gray-700">Scenic mountain trails and views.</p>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="why-card bg-white rounded-2xl overflow-hidden cursor-pointer transition-transform hover:scale-105"
+                    data-images="Activities/food1.jpg|Activities/food2.jpg|Activities/food3.jpg">
+                    <img class="why-img w-full h-56 object-cover" src="Activities/food1.jpg">
+                    <div class="p-6 text-center text-black">
+                        <h3 class="text-xl font-bold">Cuisine</h3>
+                        <p class="mt-2 text-sm text-gray-700">Local dishes and fresh seafood.</p>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="why-card bg-white rounded-2xl overflow-hidden cursor-pointer transition-transform hover:scale-105"
+                    data-images="Activities/diving1.jpg|Activities/diving2.jpg|Activities/diving3.jpg">
+                    <img class="why-img w-full h-56 object-cover" src="Activities/diving1.jpg">
+                    <div class="p-6 text-center text-black">
+                        <h3 class="text-xl font-bold">Diving</h3>
+                        <p class="mt-2 text-sm text-gray-700">Clear waters and marine life.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Find Us Section -->
+    <section id="find-us" class="bg-[#001829] py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-white text-center mb-12 text-4xl font-bold">Find Us in Mabini, Batangas</h2>
+
+            <div class="flex justify-center max-w-6xl mx-auto">
+                <!-- Map -->
+                <div class="bg-[#0A2A42] rounded-2xl overflow-hidden h-96 w-full max-w-2xl">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d247490.0981374!2d120.82!3d13.73!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd7729c2a1e5a7%3A0x82f8ef19d3b6c0d8!2sMabini%2C%20Batangas!5e0!3m2!1sen!2sph!4v1234567890"
+                        width="100%" height="100%" style="border: 0;" allowfullscreen loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#000D1A] py-16">
+        <div class="container mx-auto px-6">
+            <!-- Social Media & Bottom -->
+            <div class="border-b border-white/10 pb-8">
+                <div class="flex flex-col md:flex-row justify-start items-start gap-12">
+                    <!-- Logo & Description -->
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-14 h-14">
+                                <img src="logo.png" alt="Logo" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="text-white text-xl font-bold">Mabini, Batangas</h3>
+                        </div>
+                        <p class="text-white/70 text-sm leading-relaxed max-w-xs">
+                            Discover the underwater paradise of Mabini, Batangas. Experience world-class diving,
+                            pristine beaches, and unforgettable marine adventures.
+                        </p>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="flex flex-row items-center gap-4">
+                        <span class="text-white/70 text-sm mr-2">Follow Us</span>
+                        <a href="#"
+                            class="social-icon w-10 h-10 bg-[#0A2A42] rounded-full flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="social-icon w-10 h-10 bg-[#0A2A42] rounded-full flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="social-icon w-10 h-10 bg-[#0A2A42] rounded-full flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="social-icon w-10 h-10 bg-[#0A2A42] rounded-full flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="social-icon w-10 h-10 bg-[#0A2A42] rounded-full flex items-center justify-center text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                                <path d="M2 12h20"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div class="flex flex-col items-start gap-4">
+                        <h4 class="text-[#FDB819] font-semibold">Contact Us</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="#FDB819" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="mt-1 flex-shrink-0">
+                                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                </svg>
+                                <a href="mailto:info@divemabini.com"
+                                    class="text-white/70 hover:text-[#FDB819] transition-colors text-sm">
+                                    info@divemabini.com
+                                </a>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="#FDB819" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="mt-1 flex-shrink-0">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                    </path>
+                                </svg>
+                                <a href="tel:+639123456789"
+                                    class="text-white/70 hover:text-[#FDB819] transition-colors text-sm">
+                                    +63 912 345 6789
+                                </a>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="#FDB819" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="mt-1 flex-shrink-0">
+                                    <path
+                                        d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+                                    </path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span class="text-white/70 text-sm">
+                                    Mabini, Batangas, Philippines
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <p class="text-white/40 text-sm">
+                © 2025 Mabini, Batangas. All rights reserved.
+            </p>
+        </div>
+        </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation
+        const navHeight = 90; // adjust if needed
+
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                const id = this.getAttribute("href");
+                const target = document.querySelector(id);
+
+                if (!target) return;
+
+                const y = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+                window.scrollTo({
+                    top: y,
+                    behavior: "smooth"
+                });
+            });
+        });
+
+        // Scroll to about section
+        function scrollToAbout() {
+            document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Carousel functionality
+        let currentIndex = 1;
+        const totalSlides = 3;
+
+        function updateCarousel() {
+            const cards = document.querySelectorAll('.carousel-card');
+            const dots = document.querySelectorAll('.dot');
+
+            cards.forEach((card, index) => {
+                const cardIndex = parseInt(card.getAttribute('data-index'));
+                const diff = (cardIndex - currentIndex + totalSlides) % totalSlides;
+
+                card.classList.remove('center', 'left', 'right');
+
+                if (diff === 0) {
+                    card.classList.add('center');
+                } else if (diff === 1 || diff === -2) {
+                    card.classList.add('right');
+                } else {
+                    card.classList.add('left');
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        // Initialize carousel
+        updateCarousel();
+
+        // Expanded card modal: opens when clicking a resort card
+        (function setupCardModal() {
+            const resortImagesFallback = [
+                'https://images.unsplash.com/photo-1501117716987-c8e1ecb202d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+                'https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+            ];
+
+            function slugify(text) {
+                return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            }
+
+            function buildModal(title, images, contact) {
+                const backdrop = document.createElement('div');
+                backdrop.className = 'modal-backdrop';
+
+                const modal = document.createElement('div');
+                modal.className = 'card-modal';
+
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'close-btn';
+                closeBtn.innerHTML = '✕';
+                closeBtn.addEventListener('click', () => { document.body.removeChild(backdrop); document.body.removeChild(modal); });
+
+                const imagesCol = document.createElement('div');
+                imagesCol.className = 'images';
+                const mainWrap = document.createElement('div');
+                mainWrap.className = 'main-img';
+                const mainImg = document.createElement('img');
+                mainImg.src = images[0];
+                mainWrap.appendChild(mainImg);
+
+                const thumbs = document.createElement('div');
+                thumbs.className = 'thumbs';
+                images.forEach(src => {
+                    const t = document.createElement('img');
+                    t.src = src;
+                    t.addEventListener('click', () => { mainImg.src = src; });
+                    thumbs.appendChild(t);
+                });
+
+                imagesCol.appendChild(mainWrap);
+                imagesCol.appendChild(thumbs);
+
+                const infoCol = document.createElement('div');
+                infoCol.className = 'info';
+                const h3 = document.createElement('h3');
+                h3.textContent = title;
+                const desc = document.createElement('p');
+                desc.textContent = contact.description || 'Beautiful resort in Mabini, Batangas.';
+                const contactBox = document.createElement('div');
+                contactBox.className = 'contact';
+                contactBox.innerHTML = `
+                    <p><strong>Phone:</strong> ${contact.phone}</p>
+                    <p><strong>Email:</strong> <a href="mailto:${contact.email}" style="color:#FDB819">${contact.email}</a></p>
+                    <p><strong>Location:</strong> ${contact.location || 'Mabini, Batangas'}</p>
+                `;
+
+                infoCol.appendChild(h3);
+                infoCol.appendChild(desc);
+                infoCol.appendChild(contactBox);
+
+                modal.appendChild(closeBtn);
+                modal.appendChild(imagesCol);
+                modal.appendChild(infoCol);
+
+                backdrop.addEventListener('click', () => {
+                    if (document.body.contains(modal)) {
+                        document.body.removeChild(modal);
+                        document.body.removeChild(backdrop);
+                    }
+                });
+
+                document.body.appendChild(backdrop);
+                document.body.appendChild(modal);
+            }
+
+            document.querySelectorAll('.marine-card').forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', (e) => {
+                    // prevent opening modal when clicking inside existing modal elements
+                    if (e.target.closest('.card-modal')) return;
+                    const titleEl = card.querySelector('h3');
+                    const title = titleEl ? titleEl.textContent.trim() : 'Resort';
+                    const imgEl = card.querySelector('img');
+                    // Prefer data attributes on the card if present
+                    const images = (card.dataset.images && card.dataset.images.split('|')) || [];
+                    if (!images.length) {
+                        const mainSrc = imgEl ? imgEl.src : resortImagesFallback[0];
+                        images.push(mainSrc, ...resortImagesFallback.slice(0, 2));
+                    }
+
+                    const contact = {
+                        phone: card.dataset.phone || '+63 912 345 6789',
+                        email: card.dataset.email || `info@${slugify(title) || 'resort'}.com`,
+                        location: card.dataset.location || 'Mabini, Batangas',
+                        description: card.dataset.description || (card.querySelector('.text-white\/70') ? card.querySelector('.text-white\/70').textContent.trim() : '')
+                    };
+
+                    buildModal(title, images, contact);
+                });
+            });
+        })();
+        // Hero slideshow
+        const hero = document.getElementById('hero');
+
+        const heroImages = [
+            "heroimg/heroimg.jpg",
+            "heroimg/heroimg1.jpg",
+            "heroimg/heroimg2.jpg",
+            "heroimg/heroimg3.jpg",
+            "heroimg/heroimg4.jpg"
+        ];
+
+        let heroIndex = 0;
+
+        setInterval(() => {
+            heroIndex = (heroIndex + 1) % heroImages.length;
+            hero.style.backgroundImage = `url('${heroImages[heroIndex]}')`;
+        }, 4000);
+
+        document.querySelectorAll('.why-card').forEach(card => {
+            const img = card.querySelector('.why-img');
+            const images = card.dataset.images.split("|");
+            let index = 0;
+            let interval;
+
+            card.addEventListener('mouseenter', () => {
+                interval = setInterval(() => {
+                    index = (index + 1) % images.length;
+                    img.src = images[index];
+                }, 1200); // change picture every 1.2 sec
+            });
+
+            card.addEventListener('mouseleave', () => {
+                clearInterval(interval);
+                index = 0;
+                img.src = images[0]; // return to first image
+            });
+        });
+    </script>
+</body>
+
+</html>
