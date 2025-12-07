@@ -119,4 +119,3 @@ This project is open source and available under the [MIT License](LICENSE).
 - Hosting by [Vercel](https://vercel.com)
 - Inspiration from beautiful tourism destinations
 
-- Visit the live site: [mabinilandingpage.vercel.app](https://mabinilandingpage.vercel.app/)
